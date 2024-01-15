@@ -1,0 +1,52 @@
+{% extends 'layouts/base.html' %}
+{% block content %}
+
+    <div class="card d-flex p-2 rounded">
+        <div>Статус проекта:
+            {% if project.status %}
+                <h5 class="badge rounded bg-success   ">Активен</h5>
+            {% else %}
+                <h5 class="badge rounded bg-danger   ">Не активен</h5>
+            {% endif %}
+        </div>
+        <div class="m-3 rounded "># ID: <span
+                class="font-italic font-weight-bold">{{ project.id }}</span></div>
+        <div class="m-3 rounded">Название: <span class="font-italic font-weight-bold">{{ project.name }}</span></div>
+        <div class="m-3 rounded">Клиент: <span
+                class="font-italic font-weight-bold">{{ project.client }}</span></div>
+        <div class="  m-3 rounded   ">Платформа: <span
+                class="font-italic font-weight-bold">{{ project.platform }}</span></div>
+        <div class="  m-3 rounded   ">Дата начала работ: <span
+                class="font-italic font-weight-bold">{{ project.start_date }}</span></div>
+        <div class=" m-3 rounded ">Дата окончания работ: {{ project.finish_date }}</div>
+        <div class=" m-3 rounded ">Сервер: {{ project.server }}</div>
+        <div class=" m-3 rounded ">Сервер Инфо: <br>{{ project.server_info }}</div>
+        <div class=" m-3 rounded ">Мой сервер: <br>{% if project.is_server_mine %}Да{% else %}
+            Нет{% endif %}</div>
+        <div class="  m-3 rounded   ">Цена сервера: <br>{{ project.rent_price }}</div>
+        <div class="  m-3 rounded   ">Дата следующей оплаты сервера:
+            <br>{{ project.rent_next_payment_date }}</div>
+        <div class="  m-3 rounded   ">Поддержка: <br>{% if project.support %}Да{% else %}
+            Нет{% endif %}</div>
+        <div class="  m-3 rounded   ">Цена поддержки: <br>{{ project.support_price }}</div>
+        <div class="  m-3 rounded   ">Дата следующей оплаты поддержки:
+            <br>{{ project.support_next_payment_date }}</div>
+        <div class="  m-3 rounded   ">Описание: <br>{{ project.description }}</div>
+        <div class="  m-3 rounded   ">Комментарий: <br>{{ project.comment }}</div>
+        <div class="  m-3 rounded   ">Доход с проекта: <br>{{ project.income }}</div>
+        <div class="  m-3 rounded   ">Долг: <br>{{ project.debt }}</div>
+        <br>
+        <div>
+            <a href="/update_project/{{ project.id }}">
+                <button class="btn btn-success">Редактировать</button>
+            </a>
+        </div>
+        <br>
+        <div>
+            <a href="/delete_project/{{ project.id }}">
+                <button class="btn btn-danger">Удалить</button>
+            </a>
+        </div>
+    </div>
+
+{% endblock content %}

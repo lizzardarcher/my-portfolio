@@ -1,0 +1,51 @@
+{% block content %}
+    <!-- Top content -->
+    {% if user.is_superuser %}
+        <div class="section-container bg-dark m-1 p-5" id="top-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col col-md-10 offset-md-1 col-lg-8 offset-lg-2">
+                        <h1 class="wow fadeIn text-light">Панель администратора</h1>
+                        <div class="description wow fadeInLeft">
+                            <p>
+                                Данное приложение предназначено для управления своими freelance проектами
+                                <br>
+                                <a href="#"><strong>lizzard.projects</strong></a>.
+                            </p>
+                        </div>
+                        <div class="buttons wow fadeInUp">
+                            <a class="btn btn-primary btn-customized" href="/create_project">
+                                <i class="fas fa-book-open"></i> Создать проект
+                            </a>
+                            <a class="btn btn-primary btn-customized" href="/create_portfolio_project">
+                                <i class="fas fa-book-open-reader"></i> Добавить в портфолио
+                            </a>
+                            <a class="btn btn-primary btn-customized-2" href="/projects">
+                                <i class="fas fa-pencil-alt"></i> К проектам
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="top-content section-container bg-dark" id="top-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col col-md-10 offset-md-1 col-lg-8 offset-lg-2">
+                        <h1 class="wow fadeIn">Freelance App | <strong>Pro</strong></h1>
+
+                        <div class="buttons wow fadeInUp">
+                            <a class="btn btn-primary btn-customized" href="/#section-5">
+                                <i class="fas fa-book-open"></i> Мои проекты
+                            </a>
+                            <a class="btn btn-primary btn-customized-2" href="/#section-6">
+                                <i class="fas fa-pencil-alt"></i> Контакты
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock content %}

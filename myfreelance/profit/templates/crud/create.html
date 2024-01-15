@@ -1,0 +1,23 @@
+{% extends 'layouts/base.html' %}
+{% block content %}
+    <body class="bg-light bg-gradient">
+    <div class="card col-12 justify-content-center align-items-center">
+        <div class="buttons wow fadeInUp">
+            <br>
+            <a href="/projects" class="btn btn-primary btn-customized">Назад к проектам</a>
+            <br>
+            <br>
+        </div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p}}
+            <br>
+            <br>
+            <button type="submit" class="btn btn-success ">Подтвердить</button>
+            <br>
+            <br>
+
+        </form>
+    </div>
+    </body>
+{% endblock %}

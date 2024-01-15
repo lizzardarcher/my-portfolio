@@ -1,0 +1,84 @@
+{% extends 'layouts/base.html' %}
+{% load mathfilters %}
+{% block stylesheets %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+{% endblock stylesheets %}
+{% block content %}
+<!-- TABLE -->
+<table class="table table-striped" id="projects">
+    <thead>
+    <tr>
+        <th scope="col">Название</th>
+        <th scope="col">Клиент</th>
+        <th scope="col">Платформа</th>
+        <th scope="col">Сервер</th>
+        <th scope="col">Поддержка</th>
+        <th scope="col">$ Поддержки</th>
+        <th scope="col">Оплата поддержки</th>
+        <th scope="col">$ Аренды</th>
+        <th scope="col">Оплата сервера</th>
+        <th scope="col">Цена</th>
+        <th scope="col">Оплачено</th>
+        <th scope="col">Доп.<span class="position-absolute translate-middle badge rounded-pill bg-secondary ">
+                <a href="/create_support_payment" style="color: black">+</a>
+                  </span></th>
+        <th scope="col">Долг</th>
+        <th scope="col">#</th>
+    </tr>
+    </thead>
+
+    {% for project in projects %}
+        <div class="container "></div>
+
+        <tbody>
+        <tr>
+            {% if project.status %}
+                <th class="text-success">{{ project.name }}<a href="/project_details/{{ project.id }}"><br><i
+                        class="fa-solid fa-pen-to-square"></i></a></th>
+            {% else %}
+                <td class="text-danger">{{ project.name }}<a href="/project_details/{{ project.id }}"><br><i
+                        class="fa-solid fa-pen-to-square"></i></a></td>
+            {% endif %}
+            <td>{{ project.client }}</td>
+            <td>{{ project.platform }}</td>
+            <td><a href="{{ project.server }}">{{ project.server }}</a>
+                {% if project.is_server_mine %}<br>
+                    Мой сервер 💻{% else %}{% endif %}</td>
+            <td>{% if project.support %}Да{% else %}-{% endif %}</td>
+            <td>{% if project.support_price %}{{ project.support_price }}{% else %}-{% endif %}</td>
+            <td>{% if project.support_next_payment_date %}{{ project.support_next_payment_date }}{% else %}
+                -{% endif %}</td>
+            <td>{% if project.rent_price %}{{ project.rent_price }}{% else %}-{% endif %}</td>
+            <td>{% if project.rent_next_payment_date %}{{ project.rent_next_payment_date }}{% else %}
+                -{% endif %}</td>
+            <td>{{ project.project_price }}</td>
+            <td>{{ project.income }}</td>
+            <td class="position-relative ">
+                <div class="dropdown">
+                    <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton1"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                        $
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        {% for payment in support_payments %}
+                            {% if payment.project_id == project.id %}
+                                <li><a class="dropdown-item" href="/support_payment_details/{{ payment.id }}">{{ payment.price }} | {{ payment.payment_date|date }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+
+            </td>
+            <td>{{ project.project_price|sub:project.income }}</td>
+            <td>
+                <a href="/update_project/{{ project.id }}"><i class="fa-regular fa-pen-to-square"></i></a>
+                <a href="/delete_project/{{ project.id }}"><i class="fa-solid fa-trash"></i></a>
+            </td>
+        </tr>
+        </tbody>
+    {% endfor %}
+</table>
+<h1>Общий Доход: {{ total_income }}р</h1>
+{% endblock content %}

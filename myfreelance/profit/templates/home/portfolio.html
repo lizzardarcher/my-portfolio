@@ -1,0 +1,255 @@
+{% extends 'layouts/base.html' %}
+{% block content %}
+    {% load static %}
+    <div class="section-5-container section-container" id="section-5">
+        <div class="container">
+            <div class="row">
+                <div class="col section-5 section-description wow fadeIn">
+                    <h2>Мои проекты</h2>
+                    <div class="divider-1 wow fadeInUp"><span></span></div>
+                    <p>Здесь неполный перечень проектов, которые я разработал самостоятельно, либо приложил руку к
+                        созданию.</p>
+                </div>
+            </div>
+
+            <div id="mysites" class="col-md-4 section-1-box wow fadeInDown">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="section-1-box-icon">
+                            <i class="fa-solid fa-globe"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <h3>Сайты</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-md-4 section-5-box wow fadeInUp">
+                    <div class="section-5-box-image"><img
+                            src="{% static 'assets/img/portfolio/photo_2023-12-13_09-55-11.jpg' %}"
+                            alt="portfolio-1"></div>
+                    <h3><i class="fas fa-stop"></i> Сайт-админ-панель</h3>
+                    <h3><i class="fas fa-calendar-week"></i> Август 2023</h3>
+                    <p>Многофункциональный сайт, работающий в связке с телеграм-ботом и парсерами. Предназначен для
+                        аналитики и сбора данных по криптовалютам, а также выполняет некоторые другие функции.
+                        <br><a href="https://appseed.us/product/black-dashboard/django/" target="_blank">Дизайн
+                            шаблона</a>
+                    </p>
+                </div>
+
+                <div class="col-md-4 section-5-box wow fadeInUp">
+                    <div class="section-5-box-image"><img
+                            src="{% static 'assets/img/portfolio/image_2023-12-13_10-05-00.png' %}"
+                            alt="portfolio-1"></div>
+                    <h3><i class="fas fa-stop"></i> Сайт-админ-панель</h3>
+                    <h3><i class="fas fa-calendar-week"></i> Декабрь 2022</h3>
+                    <p>Веб админ-панель. Работает в связке с телеграм-ботом. Предназначена для
+                        рассылки сообщений по чатам Телеграм владельца сайта в определенной последовательности
+                        <br><a href="https://appseed.us/product/black-dashboard/django/" target="_blank">Дизайн
+                            шаблона</a>
+                    </p>
+                </div>
+
+                <div class="col-md-4 section-5-box wow fadeInUp">
+                    <div class="section-5-box-image"><img
+                            src="{% static 'assets/img/portfolio/image_2023-12-13_10-16-05.png' %}"
+                            alt="portfolio-1"></div>
+                    <h3><i class="fas fa-globe"></i> Сайт</h3>
+                    <h3><i class="fas fa-calendar-week"></i> Март 2023</h3>
+                    <p>
+                        <a href="https://ves-v-norme.ru/" target="_blank">ves-v-norme.ru </a>
+                        Конвертация сайта с платформы WordPress на django и перезалив на другой хостинг
+                    </p>
+                </div>
+
+                <div class="col-md-4 section-5-box wow fadeInUp">
+                    <div class="section-5-box-image"><img
+                            src="{% static 'assets/img/portfolio/image_2023-12-13_10-21-53.png' %}"
+                            alt="portfolio-1"></div>
+                    <h3><i class="fas fa-globe"></i> Сайт</h3>
+                    <h3><i class="fas fa-calendar-week"></i> Октябрь 2021</h3>
+                    <p>
+                        <a href="https://inpost.su/" target="_blank">inpost.su </a>
+                        Веб приложение для отложенной рассылки постов в телеграм каналы. Аналитика своих каналов.
+                        <br><a href="https://appseed.us/product/black-dashboard/django/" target="_blank">Дизайн
+                        шаблона</a>
+                    </p>
+                </div>
+
+                <div class="col-md-4 section-5-box wow fadeInUp">
+                    <div class="section-5-box-image"><img
+                            src="{% static 'assets/img/portfolio/image_2023-12-13_10-50-42.png' %}"
+                            alt="portfolio-1"></div>
+                    <h3><i class="fas fa-stop"></i> Сайт-админ-панель</h3>
+                    <h3><i class="fas fa-calendar-week"></i> Апрель 2023</h3>
+                    <p>Веб админ-панель. Сложная система рассылки по группам Телеграм с различных аккаунтов.
+                        Создан автоответчик и реализована система по взаимодействию администратора с клиентами через 1
+                        аккаунт.
+                        <br>Дизайн шаблона стандартный <a
+                                href="https://docs.djangoproject.com/en/4.2/ref/contrib/admin/"
+                                target="_blank">Django</a>
+                    </p>
+                </div>
+
+                <div class="col-md-4 section-5-box wow fadeInUp">
+                    <div class="section-5-box-image"><img
+                            src="{% static 'assets/img/portfolio/image_2023-12-13_10-56-42.png' %}"
+                            alt="portfolio-1"></div>
+                    <h3><i class="fas fa-stop"></i> Сайт-админ-панель</h3>
+                    <h3><i class="fas fa-calendar-week"></i> Апрель 2023</h3>
+                    <p>Веб админ-панель + Телеграм-бот. Выполняет пересыл постов из канала ВК в канал Телеграм.
+                        В боте предназначен для формирования заказа.
+                        <a href="https://t.me/helperwishesbot" target="_blank"><i class="fa-brands fa-telegram"></i> Бот</a>
+                        <br>Дизайн шаблона стандартный <a
+                                href="https://docs.djangoproject.com/en/4.2/ref/contrib/admin/"
+                                target="_blank">Django</a>
+                    </p>
+                </div>
+
+                <div class="col-md-4 section-5-box wow fadeInUp">
+                    <div class="section-5-box-image"><img
+                            src="{% static 'assets/img/portfolio/image_2023-12-13_11-06-42.png' %}"
+                            alt="portfolio-1"></div>
+                    <h3><i class="fas fa-globe"></i> Сайт</h3>
+                    <h3><i class="fas fa-calendar-week"></i> Ноябрь 2020</h3>
+                    <a href="https://polirovkin.ru/" target="_blank">polirovkin.ru </a>
+                    <p>Сайт на движке Opencart. Поддержка и доработка </p>
+                </div>
+
+                <div class="col-md-4 section-5-box wow fadeInUp">
+                    <div class="section-5-box-image"><img
+                            src="{% static 'assets/img/portfolio/image_2023-12-13_11-08-53.png' %}"
+                            alt="portfolio-1"></div>
+                    <h3><i class="fas fa-globe"></i> Сайт</h3>
+                    <h3><i class="fas fa-calendar-week"></i> Май 2021</h3>
+                    <a href="https://uzmenwater.ru/" target="_blank">uzmenwater.ru </a>
+                    <p>Сайт на движке Django c кастомным дизайном. Поддержка и доработка
+                    </p>
+                </div>
+
+                <div class="col-md-4 section-5-box wow fadeInUp">
+                    <div class="section-5-box-image"><img
+                            src="{% static 'assets/img/portfolio/okdivan.png' %}"
+                            alt="portfolio-1"></div>
+                    <h3><i class="fas fa-globe"></i> Сайт</h3>
+                    <h3><i class="fas fa-calendar-week"></i> Февраль 2020</h3>
+                    <a href="hhttps://okdivan.ru/" target="_blank">okdivan.ru </a>
+                    <p>Сайт на движке Opencart. Поддержка и доработка </p>
+                </div>
+
+                <div class="col-md-4 section-5-box wow fadeInUp">
+                    <p>Также около 10 админ панелей, которые не попали в этот список. Они не публичные и выполняют
+                        работу под конкретную задачу клиента</p>
+                </div>
+
+            </div>
+
+            <div id="mybots" class="col-md-4 section-1-box wow fadeInDown">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="section-1-box-icon">
+                            <i class="fa-brands fa-telegram"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <h3>Боты</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-md-4 section-5-box wow fadeInUp">
+                    <h3><i class="fas fa-calendar-week"></i> Август 2021</h3>
+                    <p>Бот для оформления заказов
+                        <br><a href="https://t.me/helperwishesbot" target="_blank">@helperwishesbot</a>
+                    </p>
+                </div>
+
+                <div class="col-md-4 section-5-box wow fadeInUp">
+                    <h3><i class="fas fa-calendar-week"></i> Ноябрь 2023</h3>
+                    <p>Бот для оповещения и рассылки
+                        <br><a href="https://t.me/marafon_12_bot" target="_blank">@marafon_12_bot</a>
+                    </p>
+                </div>
+
+                <div class="col-md-4 section-5-box wow fadeInUp">
+                    <h3><i class="fas fa-calendar-week"></i> Август 2021</h3>
+                    <p>Бот для администрирования рассылки в группы
+                        <br><a href="https://t.me/realexchangerbot" target="_blank">@realexchangerbot</a>
+                    </p>
+                </div>
+
+                <div class="col-md-4 section-5-box wow fadeInUp">
+                    <h3><i class="fas fa-calendar-week"></i> Сентябрь 2023</h3>
+                    <p>Бот для участников марафона по похудению
+                        <br><a href="https://t.me/Helper112233_bot" target="_blank">@Helper112233_bot</a>
+                    </p>
+                </div>
+
+                <div class="col-md-4 section-5-box wow fadeInUp">
+                    <h3><i class="fas fa-calendar-week"></i> Октябрь 2022</h3>
+                    <p>Бот для поиска и скачиванию игр
+                        <br><a href="https://t.me/fitgirlrepacktorrentbot" target="_blank">@fitgirlrepacktorrentbot</a>
+                    </p>
+                </div>
+
+                <div class="col-md-4 section-5-box wow fadeInUp">
+                    <h3><i class="fas fa-calendar-week"></i> Март 2021</h3>
+                    <p>Бот для размещения объявлений
+                        <br><a href="https://t.me/Vapepredlog_bot" target="_blank">@Vapepredlog_bot</a>
+                    </p>
+                </div>
+
+                <div class="col-md-4 section-5-box wow fadeInUp">
+                    <p>Также более 20 ботов, которые не попали в этот список. Они не публичные и выполняют
+                        работу под конкретную задачу клиента</p>
+                </div>
+
+            </div>
+
+            <div id="myprograms" class="col-md-4 section-1-box wow fadeInDown">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="section-1-box-icon">
+                            <i class="fa-solid fa-desktop"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <h3>Программы</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-md-4 section-5-box wow fadeInUp">
+                    <h3><i class="fas fa-calendar-week"></i> Апрель 2022</h3>
+                    <p>Программа на сборки .session файлов для Телеграм</p>
+                </div>
+
+                <div class="col-md-4 section-5-box wow fadeInUp">
+                    <h3><i class="fas fa-calendar-week"></i> Февраль 2021</h3>
+                    <p>Программа на ПК для взаимодействия с эмулятором Android (Nox) и выполнение в нём определенных
+                        действий.</p>
+                </div>
+
+                <div class="col-md-4 section-5-box wow fadeInUp">
+                    <h3><i class="fas fa-calendar-week"></i> Январь 2019</h3>
+                    <p>Программа для студентки Британского ВУЗа</p>
+                    <a href="https://github.com/lizzardarcher/abmiguity-aversion-effect" target="_blank">abmiguity-aversion-effect</a>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col section-bottom-button wow fadeInUp">
+                    <a class="btn btn-primary btn-customized" href="#" role="button">
+                        <i class="fas fa-sync"></i> Просмотреть заново
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

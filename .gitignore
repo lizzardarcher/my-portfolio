@@ -1,2 +1,4 @@
 /myfreelance/tg_job_finder/*.session
 /myfreelance/myfreelance/static/*
+.venv
+venv

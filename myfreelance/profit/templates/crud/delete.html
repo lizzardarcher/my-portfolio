@@ -1,0 +1,20 @@
+{% extends 'layouts/base.html' %}
+{% block content %}
+    <body class="bg-light bg-gradient">
+    <div class="card col-12 justify-content-center align-items-center">
+        <br>
+        <a href="/projects" class="btn btn-primary btn-customized">Назад к проектам</a>
+        <br>
+        <br>
+        <form method="post">
+            {% csrf_token %}
+            <h3 class="text-light bg-danger p-4 rounded">Вы действительно хотите удалить объект?</h3>
+            <br>
+            <br>
+            <button type="submit" class="btn btn-success ">Подтвердить</button>
+            <br>
+            <br>
+        </form>
+    </div>
+    </body>
+{% endblock %}

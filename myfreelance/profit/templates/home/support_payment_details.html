@@ -1,0 +1,25 @@
+{% extends 'layouts/base.html' %}
+{% block content %}
+    <br>
+    <a class="btn btn-primary btn-customized " href="/projects">Назад к проектам</a>
+    <br>
+    <br>
+
+    <div class="container-fluid">
+        <div class="card d-flex p-2 rounded">
+            <div class="bg-secondary rounded text-light"># ID: {{ sp.id }}</div>
+            <br>
+            <div class="bg-secondary rounded text-light">$: {{ sp.price }}</div>
+            <br>
+            <div class="bg-secondary rounded text-light">Дата окончания: {{ sp.payment_date }}</div>
+            <br>
+            <div class="bg-secondary rounded text-light">Описание: <br>{{ sp.description }}</div>
+            <br>
+            <div class="bg-secondary rounded text-light">Комментарий: <br>{{ sp.comment }}</div>
+        </div>
+        <br><br><br>
+        <a class="btn btn-info" href="/update_support_payment/{{ sp.id }}">Редактировать</a>
+        <a class="btn btn-danger" href="/delete_support_payment/{{ sp.id }}">Удалить</a>
+    </div>
+
+{% endblock content %}
