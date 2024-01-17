@@ -21,11 +21,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import *
 from .forms import *
 
+
 class IndexPage(TemplateView):
     template_name = 'home/index.html'
 
+
 class PortfolioTemplateView(TemplateView):
     template_name = 'home/portfolio.html'
+
 
 class ProjectListView(SuccessMessageMixin, LoginRequiredMixin, ListView):
     model = Project
@@ -52,10 +55,12 @@ class ProjectListView(SuccessMessageMixin, LoginRequiredMixin, ListView):
         })
         return context
 
+
 class ProjectDetailsView(SuccessMessageMixin, LoginRequiredMixin, DetailView):
     model = Project
     template_name = 'home/project_details.html'
     context_object_name = 'project'
+
 
 class ProjectCreateView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     model = Project
@@ -72,12 +77,14 @@ class PortfolioProjectCreateView(SuccessMessageMixin, LoginRequiredMixin, Create
     success_url = '/projects'
     success_message = 'Проект успешно добавлен!'
 
+
 class ProjectUpdateView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = Project
     template_name = 'crud/create.html'
     form_class = ProjectForm
     success_message = f'Проект успешно обновлён!'
     success_url = '/projects'
+
 
 class ProjectDeleteView(SuccessMessageMixin, LoginRequiredMixin, DeleteView):
     model = Project
@@ -92,6 +99,7 @@ class SupportPaymentsDetailsView(SuccessMessageMixin, LoginRequiredMixin, Detail
     template_name = 'home/support_payment_details.html'
     context_object_name = 'sp'
 
+
 class SupportPaymentsCreateView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     model = SupportPayments
     form_class = SupportPaymentsForm
@@ -99,6 +107,7 @@ class SupportPaymentsCreateView(SuccessMessageMixin, LoginRequiredMixin, CreateV
     context_object_name = 'support_payments'
     success_url = '/projects'
     success_message = 'Платёж успешно добавлен!'
+
 
 class SupportPaymentsUpdateView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = SupportPayments
@@ -108,6 +117,7 @@ class SupportPaymentsUpdateView(SuccessMessageMixin, LoginRequiredMixin, UpdateV
 
     def get_success_url(self):
         return f'/support_payment_details/{str(self.request.META.get("HTTP_REFERER")).split("/")[-1]}'
+
 
 class SupportPaymentsDeleteView(SuccessMessageMixin, LoginRequiredMixin, DeleteView):
     model = SupportPayments
@@ -124,6 +134,7 @@ class AdditionalPaymentsCreateView(SuccessMessageMixin, LoginRequiredMixin, Crea
     success_url = '/projects'
     success_message = 'Платёж успешно добавлен!'
 
+
 class AdditionalPaymentsUpdateView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = AdditionalPayments
     form_class = AdditionalPaymentsForm
@@ -132,6 +143,7 @@ class AdditionalPaymentsUpdateView(SuccessMessageMixin, LoginRequiredMixin, Upda
 
     def get_success_url(self):
         return f'/additional_payment_details/{str(self.request.META.get("HTTP_REFERER")).split("/")[-1]}'
+
 
 class AdditionalPaymentsDeleteView(SuccessMessageMixin, LoginRequiredMixin, DeleteView):
     model = AdditionalPayments

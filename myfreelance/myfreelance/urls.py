@@ -22,3 +22,5 @@ urlpatterns = [
     path('', include('profit.urls')),
 
 ]
+
+
