@@ -1,11 +1,6 @@
 # -*- encoding: utf-8 -*-
-# from django.shortcuts import render
-# import math
-# from datetime import datetime
-# import datetime as dt
-# import os
-
 from django.contrib.messages.views import SuccessMessageMixin
+from django.shortcuts import redirect
 # from django.db.models import Q
 # from django.http import HttpResponse
 # from django.template import loader
@@ -20,7 +15,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 # from django.http import HttpResponseRedirect
 from .models import *
 from .forms import *
-
+from django.contrib.auth import logout
 
 class IndexPage(TemplateView):
     template_name = 'home/index.html'
@@ -150,3 +145,8 @@ class AdditionalPaymentsDeleteView(SuccessMessageMixin, LoginRequiredMixin, Dele
     success_url = '/projects'
     template_name = 'crud/delete.html'
     success_message = 'Платёж успешно удален!'
+
+
+def logout_request(request):
+    logout(request)
+    return redirect('/')

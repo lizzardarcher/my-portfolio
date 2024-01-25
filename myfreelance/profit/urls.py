@@ -1,10 +1,14 @@
 from django.urls import path, re_path
-from . import views
+from django.views.static import serve
+from django.template.defaulttags import url
 from django.conf import settings
 from django.conf.urls.static import static
 
-urlpatterns = [
+from . import views
 
+urlpatterns = [
+    url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+    url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
     path('', views.IndexPage.as_view(), name='home'),
     path('portfolio', views.PortfolioTemplateView.as_view(), name='portfolio'),
     path('projects', views.ProjectListView.as_view(), name='project'),
@@ -22,7 +26,7 @@ urlpatterns = [
     path('create_additional_payment', views.AdditionalPaymentsCreateView.as_view(), name='create sp'),
     path('update_additional_payment/<int:pk>', views.AdditionalPaymentsUpdateView.as_view(), name='update sp'),
     path('delete_additional_payment/<int:pk>', views.AdditionalPaymentsDeleteView.as_view(), name='delete sp'),
-
+    path('logout_request', views.logout_request, name='logout_request')
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
