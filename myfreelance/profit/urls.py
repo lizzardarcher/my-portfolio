@@ -7,8 +7,8 @@ from django.conf.urls.static import static
 from . import views
 
 urlpatterns = [
-    url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
-    url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
+    re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+    re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
     path('', views.IndexPage.as_view(), name='home'),
     path('portfolio', views.PortfolioTemplateView.as_view(), name='portfolio'),
     path('projects', views.ProjectListView.as_view(), name='project'),

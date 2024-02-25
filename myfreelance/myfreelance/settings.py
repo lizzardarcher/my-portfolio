@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'profit',
     'tg_job_finder',
+    'tg_ya_trans_api',
     'mathfilters',  # pip3 install django-mathfilters
     'fontawesomefree',  # pip3 install fontawesomefree
 ]

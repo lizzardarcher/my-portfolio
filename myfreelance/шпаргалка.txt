@@ -1,0 +1,2 @@
+*** установка SSL сертификата ***
+https://timeweb.cloud/docs/unix-guides/ustanovka-ssl-na-nginx
