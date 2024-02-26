@@ -10,3 +10,4 @@ class IATA_ICAOAdmin(admin.ModelAdmin):
 
 
 admin.site.register(IATA_ICAO, IATA_ICAOAdmin)
+admin.site.register(TelegramScheduleUser)

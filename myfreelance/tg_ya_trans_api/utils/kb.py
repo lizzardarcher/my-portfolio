@@ -3,8 +3,25 @@ from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 def start_markup(*args, **kwargs):
     markup = InlineKeyboardMarkup()
-    markup.add(InlineKeyboardButton("🔶 Админ Панель 🔶", callback_data=f"start:admin"))
+    markup.add(InlineKeyboardButton("✈ Кольцово", callback_data=f"start:station:koltsovo"))
+    markup.add(InlineKeyboardButton("✈ Хуйцово", callback_data=f"start:station:..."))
+    markup.add(InlineKeyboardButton("✈ Гваделупа", callback_data=f"start:station:..."))
     return markup
+
+
+def shift_type(*args, **kwargs):
+    markup = InlineKeyboardMarkup()
+    markup.add(InlineKeyboardButton("☀ День", callback_data=f"start:type:day"))
+    markup.add(InlineKeyboardButton("🌙 Ночь", callback_data=f"start:type:night"))
+    markup.add(InlineKeyboardButton("🕛 Сутки", callback_data=f"start:type:24"))
+    return markup
+
+def direction_type(*args, **kwargs):
+    markup = InlineKeyboardMarkup()
+    markup.add(InlineKeyboardButton("🛬 Прилёт", callback_data=f"start:dir:arrival"))
+    markup.add(InlineKeyboardButton("🛫 Вылет", callback_data=f"start:dir:departure"))
+    return markup
+
 
 
 def del_msg(*args, **kwargs):
