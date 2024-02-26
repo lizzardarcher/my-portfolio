@@ -41,6 +41,7 @@ def get_schedule(station, direction, selected_date, selected_shift_type, bot, me
     day_start = datetime.datetime.strptime('09:00', "%H:%M").time()
     day_end = datetime.datetime.strptime('20:00', "%H:%M").time()
     day_end_departure = datetime.datetime.strptime('23:00', "%H:%M").time()
+    day_end_total = datetime.datetime.strptime('23:59', "%H:%M").time()
 
     query = (f'https://api.rasp.yandex.net/v3.0/schedule/?'
              f'apikey={YANDEX_TRANSPORT_API_KEY}'
@@ -72,10 +73,11 @@ def get_schedule(station, direction, selected_date, selected_shift_type, bot, me
         _from = i['thread']['title'].split(' — ')[event_type].lower()
         if _from not in ru_cities:
             print(i[event], i['thread']['title'])
+            fl_time = str(i[event]).split('T')[-1].split('+')[0][:5]
             if selected_shift_type == 'day':
 
-                fl_time = str(i[event]).split('T')[-1].split('+')[0][:5]
                 fl_time = datetime.datetime.strptime(fl_time, "%H:%M").time()
+
                 if direction == 'arrival':
                     if day_start < fl_time < day_end:
                         try:
@@ -83,8 +85,30 @@ def get_schedule(station, direction, selected_date, selected_shift_type, bot, me
                                 raw_data.append((i[event], _from, i['thread']['number']))
                         except:
                             raw_data.append((i[event], _from, i['thread']['number']))
+
                 elif direction == 'departure':
                     if day_start < fl_time < day_end_departure:
+                        try:
+                            if raw_data[-1] != (i[event], _from):
+                                raw_data.append((i[event], _from, i['thread']['number']))
+                        except:
+                            raw_data.append((i[event], _from, i['thread']['number']))
+
+            elif selected_shift_type == 'night':
+
+                fl_time = datetime.datetime.strptime(fl_time, "%H:%M").time()
+
+                if direction == 'arrival':
+                    if day_end < fl_time < day_end_total:
+
+                        try:
+                            if raw_data[-1] != (i[event], _from):
+                                raw_data.append((i[event], _from, i['thread']['number']))
+                        except:
+                            raw_data.append((i[event], _from, i['thread']['number']))
+
+                elif direction == 'departure':
+                    if day_end < fl_time < day_end_total:
                         try:
                             if raw_data[-1] != (i[event], _from):
                                 raw_data.append((i[event], _from, i['thread']['number']))
