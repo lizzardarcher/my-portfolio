@@ -34,7 +34,7 @@ def get_schedule(station, direction, selected_date, selected_shift_type, bot, me
     lang = ''
     json_response = 'json'
     date_1 = selected_date
-    date_2 = datetime.datetime.strptime(selected_date,'%Y-%m-%d') + datetime.timedelta(days=1)
+    date_2 = datetime.datetime.strptime(selected_date, '%Y-%m-%d') + datetime.timedelta(days=1)
     transport_type = 'plane'
     event = direction  # departure / arrival
     system = 'iata'
@@ -57,15 +57,15 @@ def get_schedule(station, direction, selected_date, selected_shift_type, bot, me
     night_end_departure = datetime.datetime.strptime('12:00', "%H:%M").time()
 
     query_1 = (f'https://api.rasp.yandex.net/v3.0/schedule/?'
-             f'apikey={YANDEX_TRANSPORT_API_KEY}'
-             f'&station={station_code}'
-             f'&lang={lang}'
-             f'&format={json_response}'
-             f'&date={date_1}'
-             f'&transport_types={transport_type}'
-             f'&event={event}'
-             f'&system={system}'
-             f'&show_systems=yandex')
+               f'apikey={YANDEX_TRANSPORT_API_KEY}'
+               f'&station={station_code}'
+               f'&lang={lang}'
+               f'&format={json_response}'
+               f'&date={date_1}'
+               f'&transport_types={transport_type}'
+               f'&event={event}'
+               f'&system={system}'
+               f'&show_systems=yandex')
 
     query_2 = (f'https://api.rasp.yandex.net/v3.0/schedule/?'
                f'apikey={YANDEX_TRANSPORT_API_KEY}'
@@ -78,79 +78,98 @@ def get_schedule(station, direction, selected_date, selected_shift_type, bot, me
                f'&system={system}'
                f'&show_systems=yandex')
 
-    r_1 = requests.get(query_1).json()
-    j_1 = json.dumps(r_1, indent=8)
-
-    for i in json.loads(j_1)['schedule']:
-        _from = i['thread']['title'].split(' — ')[event_type].lower()
-        if _from not in ru_cities:
-            schedule_pool.append(i)
     if selected_shift_type == 'night':
+
+        #  Запрос на текущую дату
+        r_1 = requests.get(query_1).json()
+        j_1 = json.dumps(r_1, indent=8)
+        for i in json.loads(j_1)['schedule']:
+            _from = i['thread']['title'].split(' — ')[event_type].lower()
+            fl_time = str(i[event]).split('T')[-1].split('+')[0][:5]
+            fl_time = datetime.datetime.strptime(fl_time, "%H:%M").time()
+            if _from not in ru_cities:
+                if day_end < fl_time < day_end_total:
+                    schedule_pool.append(i)
+
+        #  Запрос на следующую дату
         r_2 = requests.get(query_2).json()
         j_2 = json.dumps(r_2, indent=8)
         for i in json.loads(j_2)['schedule']:
             _from = i['thread']['title'].split(' — ')[event_type].lower()
+            fl_time = str(i[event]).split('T')[-1].split('+')[0][:5]
+            fl_time = datetime.datetime.strptime(fl_time, "%H:%M").time()
+            if _from not in ru_cities:
+                if day_start_total < fl_time < night_end_departure:
+                    schedule_pool.append(i)
+
+        for i in schedule_pool:
+            _from = i['thread']['title'].split(' — ')[event_type].lower()
+            fl_time = str(i[event]).split('T')[-1].split('+')[0][:5]
+            fl_time = datetime.datetime.strptime(fl_time, "%H:%M").time()
+
+            if direction == 'arrival':
+                if day_end < fl_time < day_end_total or day_start_total < fl_time < day_end:
+
+                    try:
+                        if raw_data[-1] != (i[event], _from):
+                            raw_data.append((i[event], _from, i['thread']['number']))
+                    except:
+                        raw_data.append((i[event], _from, i['thread']['number']))
+
+            elif direction == 'departure':
+                if day_end < fl_time < day_end_total or day_start_total < fl_time < night_end_departure:
+                    try:
+                        if raw_data[-1] != (i[event], _from):
+                            raw_data.append((i[event], _from, i['thread']['number']))
+                    except:
+                        raw_data.append((i[event], _from, i['thread']['number']))
+
+    if selected_shift_type != 'night':
+
+        #  Запрос на текущую дату
+        r_1 = requests.get(query_1).json()
+        j_1 = json.dumps(r_1, indent=8)
+        for i in json.loads(j_1)['schedule']:
+            _from = i['thread']['title'].split(' — ')[event_type].lower()
             if _from not in ru_cities:
                 schedule_pool.append(i)
 
-    # for i in json.loads(j_1)['schedule']:
-    #     _from = i['thread']['title'].split(' — ')[event_type].lower()
-    for i in schedule_pool:
-        _from = i['thread']['title'].split(' — ')[event_type].lower()
-        if _from not in ru_cities:
-            print(i[event], i['thread']['title'])
-            fl_time = str(i[event]).split('T')[-1].split('+')[0][:5]
-            if selected_shift_type == 'day':
+        for i in schedule_pool:
+            _from = i['thread']['title'].split(' — ')[event_type].lower()
+            if _from not in ru_cities:
+                print(i[event], i['thread']['title'])
+                fl_time = str(i[event]).split('T')[-1].split('+')[0][:5]
+                if selected_shift_type == 'day':
 
-                fl_time = datetime.datetime.strptime(fl_time, "%H:%M").time()
+                    fl_time = datetime.datetime.strptime(fl_time, "%H:%M").time()
 
-                if direction == 'arrival':
-                    if day_start < fl_time < day_end:
-                        try:
-                            if raw_data[-1] != (i[event], _from):
+                    if direction == 'arrival':
+                        if day_start < fl_time < day_end:
+                            try:
+                                if raw_data[-1] != (i[event], _from):
+                                    raw_data.append((i[event], _from, i['thread']['number']))
+                            except:
                                 raw_data.append((i[event], _from, i['thread']['number']))
-                        except:
-                            raw_data.append((i[event], _from, i['thread']['number']))
 
-                elif direction == 'departure':
-                    if day_start < fl_time < day_end_departure:
-                        try:
-                            if raw_data[-1] != (i[event], _from):
+                    elif direction == 'departure':
+                        if day_start < fl_time < day_end_departure:
+                            try:
+                                if raw_data[-1] != (i[event], _from):
+                                    raw_data.append((i[event], _from, i['thread']['number']))
+                            except:
                                 raw_data.append((i[event], _from, i['thread']['number']))
-                        except:
+
+                elif selected_shift_type == '24':
+                    try:
+                        if raw_data[-1] != (i[event], _from):
                             raw_data.append((i[event], _from, i['thread']['number']))
-
-            elif selected_shift_type == 'night':
-
-                fl_time = datetime.datetime.strptime(fl_time, "%H:%M").time()
-
-                if direction == 'arrival':
-                    if day_end < fl_time < day_end_total:
-
-                        try:
-                            if raw_data[-1] != (i[event], _from):
-                                raw_data.append((i[event], _from, i['thread']['number']))
-                        except:
-                            raw_data.append((i[event], _from, i['thread']['number']))
-
-                elif direction == 'departure':
-                    if day_end < fl_time < day_end_total:
-                        try:
-                            if raw_data[-1] != (i[event], _from):
-                                raw_data.append((i[event], _from, i['thread']['number']))
-                        except:
-                            raw_data.append((i[event], _from, i['thread']['number']))
-            else:
-                try:
-                    if raw_data[-1] != (i[event], _from):
+                    except:
+                        print(traceback.format_exc())
                         raw_data.append((i[event], _from, i['thread']['number']))
-                except:
-                    print(traceback.format_exc())
-                    raw_data.append((i[event], _from, i['thread']['number']))
     raw_data = sorted(raw_data)
     count = 1
     for data in raw_data:
-        tm = '<code>' + str(data[0]).split('T')[-1].split('+')[0][:5] + '</code>'
+        tm = '<code>' + str(data[0]).split('T')[0] + ' ' + str(data[0]).split('T')[-1].split('+')[0][:5] + '</code>'
         fl = str(data[2])
         ds = '<i>' + str(data[1]).capitalize() + '</i>'
         text = str(count) + ') ' + tm + ' | ' + fl + ' | ' + ds
@@ -159,6 +178,7 @@ def get_schedule(station, direction, selected_date, selected_shift_type, bot, me
     bot.send_message(message.chat.id, text='Начать поиск заново /start')
     for sh in schedule_pool:
         print(sh)
+
 
 def clear_user(user):
     user.update(selected_station='', selected_date='', selected_shift_type='', selected_direction='', )
