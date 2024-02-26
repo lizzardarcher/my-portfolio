@@ -19,15 +19,16 @@ from tg_ya_trans_api.models import TelegramScheduleUser as User
 from tg_ya_trans_api.utils.access import key
 from tg_ya_trans_api.utils import kb
 
+#  ToDo сделать конфиг в базе
 YANDEX_TRANSPORT_API_KEY = '0fc89cc2-b4d4-4ee5-9e2e-a403760c330e'
 
 bot = TeleBot(token=key)
 calendar = Calendar(language=RUSSIAN_LANGUAGE)
 calendar_1_callback = CallbackData("calendar_1", "action", "year", "month", "day")
 
+logger = telebot.logger
+telebot.logger.setLevel(logging.DEBUG)
 
-# logger = telebot.logger
-# telebot.logger.setLevel(logging.DEBUG)
 
 def get_schedule(station, direction, selected_date, selected_shift_type, bot, message):
     station_code = station
@@ -44,6 +45,7 @@ def get_schedule(station, direction, selected_date, selected_shift_type, bot, me
     event_type = -1
     if event == 'arrival': event_type = 0
 
+    #  ToDo Брать информацию по городам из БД
     with open('airports.txt', 'r') as file:
         lines = file.readlines()
         for i in lines:
@@ -77,9 +79,14 @@ def get_schedule(station, direction, selected_date, selected_shift_type, bot, me
                f'&event={event}'
                f'&system={system}'
                f'&show_systems=yandex')
-
+    '''
+        Запросы разнятся в зависимости от выбранной смены дневной или ночной
+        при выборе ночной смены делается запрос на следующие сутки
+    '''
     if selected_shift_type == 'night':
-
+        '''
+            Информация по рейсам с текущей и предыдущей даты и складывается в  schedule_pool = []
+        '''
         #  Запрос на текущую дату
         r_1 = requests.get(query_1).json()
         j_1 = json.dumps(r_1, indent=8)
@@ -166,8 +173,10 @@ def get_schedule(station, direction, selected_date, selected_shift_type, bot, me
                     except:
                         print(traceback.format_exc())
                         raw_data.append((i[event], _from, i['thread']['number']))
+
     raw_data = sorted(raw_data)
     count = 1
+
     for data in raw_data:
         tm = '<code>' + str(data[0]).split('T')[0] + ' ' + str(data[0]).split('T')[-1].split('+')[0][:5] + '</code>'
         fl = str(data[2])
@@ -181,11 +190,18 @@ def get_schedule(station, direction, selected_date, selected_shift_type, bot, me
 
 
 def clear_user(user):
+    """
+     Clears user state data
+    :param user: TG User from DB
+    """
     user.update(selected_station='', selected_date='', selected_shift_type='', selected_direction='', )
 
 
 @bot.message_handler(commands=['start'])
 def start(message):
+    """
+    Add TG User to DB and greet the user
+    """
     try:
         User.objects.create(telegram_id=message.from_user.id,
                             username=message.from_user.username,
@@ -288,7 +304,6 @@ def schedule_callback_query_handler(call):
             text="Cancellation",
             reply_markup=ReplyKeyboardRemove(),
         )
-        clear_user(user)
         print(f"{calendar_1_callback}: Cancellation")
 
 
