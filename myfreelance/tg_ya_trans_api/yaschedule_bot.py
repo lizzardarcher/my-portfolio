@@ -178,7 +178,7 @@ def get_schedule(station, direction, selected_date, selected_shift_type, bot, me
     count = 1
 
     for data in raw_data:
-        tm = '<code>' + str(data[0]).split('T')[0] + ' ' + str(data[0]).split('T')[-1].split('+')[0][:5] + '</code>'
+        tm = '<code>' + str(data[0]).split('T')[-1].split('+')[0][:5] + '</code>'
         fl = str(data[2])
         ds = '<i>' + str(data[1]).capitalize() + '</i>'
         text = str(count) + ') ' + tm + ' | ' + fl + ' | ' + ds
