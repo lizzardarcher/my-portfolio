@@ -9,7 +9,7 @@ import requests
 import json
 from telebot import TeleBot
 import telebot
-from datetime import date
+from datetime import date, timedelta
 import datetime
 
 from telebot.types import CallbackQuery, ReplyKeyboardRemove
@@ -33,43 +33,69 @@ def get_schedule(station, direction, selected_date, selected_shift_type, bot, me
     station_code = station
     lang = ''
     json_response = 'json'
-    _date = selected_date
+    date_1 = selected_date
+    date_2 = datetime.datetime.strptime(selected_date,'%Y-%m-%d') + datetime.timedelta(days=1)
     transport_type = 'plane'
     event = direction  # departure / arrival
     system = 'iata'
-
-    day_start = datetime.datetime.strptime('09:00', "%H:%M").time()
-    day_end = datetime.datetime.strptime('20:00', "%H:%M").time()
-    day_end_departure = datetime.datetime.strptime('23:00', "%H:%M").time()
-    day_end_total = datetime.datetime.strptime('23:59', "%H:%M").time()
-
-    query = (f'https://api.rasp.yandex.net/v3.0/schedule/?'
-             f'apikey={YANDEX_TRANSPORT_API_KEY}'
-             f'&station={station_code}'
-             f'&lang={lang}'
-             f'&format={json_response}'
-             f'&date={_date}'
-             f'&transport_types={transport_type}'
-             f'&event={event}'
-             f'&system={system}'
-             f'&show_systems=yandex')
-
-    r = requests.get(query).json()
-    j = json.dumps(r, indent=8)
-
+    raw_data = []
     ru_cities = []
+    schedule_pool = []
+    event_type = -1
+    if event == 'arrival': event_type = 0
+
     with open('airports.txt', 'r') as file:
         lines = file.readlines()
         for i in lines:
             ru_cities.append(i.replace('\n', ''))
 
-    if event == 'arrival':
-        event_type = 0
-    else:
-        event_type = -1
+    day_start = datetime.datetime.strptime('09:00', "%H:%M").time()
+    day_end = datetime.datetime.strptime('20:00', "%H:%M").time()
+    day_end_departure = datetime.datetime.strptime('23:00', "%H:%M").time()
+    day_end_total = datetime.datetime.strptime('23:59', "%H:%M").time()
+    day_start_total = datetime.datetime.strptime('00:00', "%H:%M").time()
+    night_end_departure = datetime.datetime.strptime('12:00', "%H:%M").time()
 
-    raw_data = []
-    for i in json.loads(j)['schedule']:
+    query_1 = (f'https://api.rasp.yandex.net/v3.0/schedule/?'
+             f'apikey={YANDEX_TRANSPORT_API_KEY}'
+             f'&station={station_code}'
+             f'&lang={lang}'
+             f'&format={json_response}'
+             f'&date={date_1}'
+             f'&transport_types={transport_type}'
+             f'&event={event}'
+             f'&system={system}'
+             f'&show_systems=yandex')
+
+    query_2 = (f'https://api.rasp.yandex.net/v3.0/schedule/?'
+               f'apikey={YANDEX_TRANSPORT_API_KEY}'
+               f'&station={station_code}'
+               f'&lang={lang}'
+               f'&format={json_response}'
+               f'&date={date_2}'
+               f'&transport_types={transport_type}'
+               f'&event={event}'
+               f'&system={system}'
+               f'&show_systems=yandex')
+
+    r_1 = requests.get(query_1).json()
+    j_1 = json.dumps(r_1, indent=8)
+
+    for i in json.loads(j_1)['schedule']:
+        _from = i['thread']['title'].split(' — ')[event_type].lower()
+        if _from not in ru_cities:
+            schedule_pool.append(i)
+    if selected_shift_type == 'night':
+        r_2 = requests.get(query_2).json()
+        j_2 = json.dumps(r_2, indent=8)
+        for i in json.loads(j_2)['schedule']:
+            _from = i['thread']['title'].split(' — ')[event_type].lower()
+            if _from not in ru_cities:
+                schedule_pool.append(i)
+
+    # for i in json.loads(j_1)['schedule']:
+    #     _from = i['thread']['title'].split(' — ')[event_type].lower()
+    for i in schedule_pool:
         _from = i['thread']['title'].split(' — ')[event_type].lower()
         if _from not in ru_cities:
             print(i[event], i['thread']['title'])
@@ -131,7 +157,8 @@ def get_schedule(station, direction, selected_date, selected_shift_type, bot, me
         bot.send_message(message.chat.id, text=text, parse_mode='HTML')
         count += 1
     bot.send_message(message.chat.id, text='Начать поиск заново /start')
-
+    for sh in schedule_pool:
+        print(sh)
 
 def clear_user(user):
     user.update(selected_station='', selected_date='', selected_shift_type='', selected_direction='', )
@@ -165,6 +192,7 @@ def schedule_callback_query_handler(call):
                 station = 'SVX'
             else:
                 station = 'SVX'
+
             user.update(selected_station=station)
             now = datetime.datetime.now()  # Get the current date
             bot.send_message(chat_id=call.message.chat.id,
