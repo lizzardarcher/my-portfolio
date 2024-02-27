@@ -1,33 +1,28 @@
 import traceback
-
-from tg_ya_trans_api.utils import djangoORM
-
-import asyncio
 import logging
-
 import requests
 import json
-from telebot import TeleBot
-import telebot
-from datetime import date, timedelta
 import datetime
 
-from telebot.types import CallbackQuery, ReplyKeyboardRemove
+import telebot
+from telebot import TeleBot
+from telebot.types import ReplyKeyboardRemove
 from telebot_calendar import Calendar, CallbackData, RUSSIAN_LANGUAGE
 
+from tg_ya_trans_api.utils import djangoORM
 from tg_ya_trans_api.models import TelegramScheduleUser as User
-from tg_ya_trans_api.utils.access import key
+from tg_ya_trans_api.models import Config, CitiesRU, Airport
 from tg_ya_trans_api.utils import kb
 
-#  ToDo сделать конфиг в базе
-YANDEX_TRANSPORT_API_KEY = '0fc89cc2-b4d4-4ee5-9e2e-a403760c330e'
+YANDEX_TRANSPORT_API_KEY = Config.objects.get(pk=1).yandex_api_key
+TOKEN = Config.objects.get(pk=1).telegram_token
+bot = TeleBot(token=TOKEN)
 
-bot = TeleBot(token=key)
 calendar = Calendar(language=RUSSIAN_LANGUAGE)
 calendar_1_callback = CallbackData("calendar_1", "action", "year", "month", "day")
 
 logger = telebot.logger
-telebot.logger.setLevel(logging.DEBUG)
+telebot.logger.setLevel(logging.WARNING)
 
 
 def get_schedule(station, direction, selected_date, selected_shift_type, bot, message):
@@ -40,16 +35,10 @@ def get_schedule(station, direction, selected_date, selected_shift_type, bot, me
     event = direction  # departure / arrival
     system = 'iata'
     raw_data = []
-    ru_cities = []
+    ru_cities = [city.city for city in CitiesRU.objects.all()]
     schedule_pool = []
     event_type = -1
     if event == 'arrival': event_type = 0
-
-    #  ToDo Брать информацию по городам из БД
-    with open('airports.txt', 'r') as file:
-        lines = file.readlines()
-        for i in lines:
-            ru_cities.append(i.replace('\n', ''))
 
     day_start = datetime.datetime.strptime('09:00', "%H:%M").time()
     day_end = datetime.datetime.strptime('20:00', "%H:%M").time()
@@ -223,13 +212,6 @@ def schedule_callback_query_handler(call):
         if 'station' in query:
             bot.delete_message(call.message.chat.id, call.message.message_id)
             station = query[-1]
-
-            # todo add station / iata reference
-            if station == 'koltsovo':
-                station = 'SVX'
-            else:
-                station = 'SVX'
-
             user.update(selected_station=station)
             now = datetime.datetime.now()  # Get the current date
             bot.send_message(chat_id=call.message.chat.id,

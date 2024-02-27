@@ -20,18 +20,22 @@ from tg_ya_trans_api.models import *
 #     IATA_ICAO.objects.create(country_code=country_code, region_name=region_name, iata=iata, airport=airport, icao=icao)
 #
 
-l = []
-with open('airports.txt', 'r') as file:
-    lines = file.readlines()
-    for i in lines:
-        l.append(i.replace('\n', ''))
+# l = []
+# with open('airports.txt', 'r') as file:
+#     lines = file.readlines()
+#     for i in lines:
+#         l.append(i.replace('\n', ''))
 
-for i in l:
-    city = i
-    print(city)
-    CitiesRU.objects.create(city=city)
+# for i in l:
+#     city = i
+#     print(city)
+#     CitiesRU.objects.create(city=city)
 
 # with open('airports.txt', 'w') as file:
 #     for i in l:
 #         file.writelines(i.lower())
 #         file.writelines('\n')
+c = CitiesRU.objects.all()
+l = [x.city for x in c]
+for i in l:
+    print(i)
