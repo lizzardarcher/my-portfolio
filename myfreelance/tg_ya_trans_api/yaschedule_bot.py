@@ -3,16 +3,21 @@ import logging
 import requests
 import json
 import datetime
-
+import os
 import telebot
 from telebot import TeleBot
 from telebot.types import ReplyKeyboardRemove
 from telebot_calendar import Calendar, CallbackData, RUSSIAN_LANGUAGE
 
-from tg_ya_trans_api.utils import djangoORM
+if os.name == 'posix':
+    from utils import djangoORM
+    from utils import kb
+else:
+    from tg_ya_trans_api.utils import djangoORM
+    from tg_ya_trans_api.utils import kb
+
 from tg_ya_trans_api.models import TelegramScheduleUser as User
-from tg_ya_trans_api.models import Config, CitiesRU, Airport
-from tg_ya_trans_api.utils import kb
+from tg_ya_trans_api.models import Config, CitiesRU
 
 YANDEX_TRANSPORT_API_KEY = Config.objects.get(pk=1).yandex_api_key
 TOKEN = Config.objects.get(pk=1).telegram_token

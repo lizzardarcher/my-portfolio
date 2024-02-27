@@ -1,0 +1,16 @@
+[Unit]
+Description=Telegram bot 'Wacko Telegram Bot'
+After=syslog.target
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/var/www/html/myfreelance/tg_ya_trans_api
+Environment="PYTHONPATH=/var/www/html/myfreelance"
+ExecStart=/var/www/html/myenv/bin/python3.10 /var/www/html/myfreelance/tg_ya_trans_api/yaschedule_bot.py
+RestartSec=10
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
