@@ -221,6 +221,7 @@ def schedule_callback_query_handler(call):
 
     if 'start' in query:
         if 'station' in query:
+            bot.delete_message(call.message.chat.id, call.message.message_id)
             station = query[-1]
 
             # todo add station / iata reference
@@ -239,7 +240,7 @@ def schedule_callback_query_handler(call):
                                  month=now.month), )
 
         elif 'type' in query:
-
+            bot.delete_message(call.message.chat.id, call.message.message_id)
             if '24' in query:
                 user.update(selected_shift_type='24')
                 bot.send_message(chat_id=call.message.chat.id, text="Выборка за сутки",

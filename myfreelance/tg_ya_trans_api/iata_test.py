@@ -1,6 +1,5 @@
-# from utils import djangoORM
-# from tg_ya_trans_api.models import IATA_ICAO
-#
+from utils import djangoORM
+from tg_ya_trans_api.models import *
 #
 # import csv
 # iata_list = list()
@@ -27,7 +26,12 @@ with open('airports.txt', 'r') as file:
     for i in lines:
         l.append(i.replace('\n', ''))
 
-with open('airports.txt', 'w') as file:
-    for i in l:
-        file.writelines(i.lower())
-        file.writelines('\n')
+for i in l:
+    city = i
+    print(city)
+    CitiesRU.objects.create(city=city)
+
+# with open('airports.txt', 'w') as file:
+#     for i in l:
+#         file.writelines(i.lower())
+#         file.writelines('\n')

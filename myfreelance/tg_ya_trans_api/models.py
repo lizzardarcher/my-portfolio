@@ -24,10 +24,10 @@ class TelegramScheduleUser(models.Model):
     last_name = models.CharField(max_length=100, null=True, blank=True, default='', verbose_name="Last Name")
     username = models.CharField(max_length=100, null=True, blank=True, default='', verbose_name="username")
 
-    selected_station    = models.CharField(max_length=100, null=True, blank=True, default='', verbose_name="")
-    selected_date       = models.CharField(max_length=100, null=True, blank=True, default='', verbose_name="")
+    selected_station = models.CharField(max_length=100, null=True, blank=True, default='', verbose_name="")
+    selected_date = models.CharField(max_length=100, null=True, blank=True, default='', verbose_name="")
     selected_shift_type = models.CharField(max_length=100, null=True, blank=True, default='', verbose_name="")
-    selected_direction  = models.CharField(max_length=100, null=True, blank=True, default='', verbose_name="")
+    selected_direction = models.CharField(max_length=100, null=True, blank=True, default='', verbose_name="")
 
     def __str__(self):
         if self.first_name:
@@ -43,3 +43,26 @@ class TelegramScheduleUser(models.Model):
     class Meta:
         verbose_name = 'Пользователь телеграм'
         verbose_name_plural = 'Пользователи телеграм'
+
+
+class Airport(models.Model):
+    iata = models.CharField(max_length=3, verbose_name="IATA")
+    airport = models.CharField(max_length=1000, verbose_name="Аэропорт ")
+
+    def __str__(self):
+        return self.iata + ' ' + self.airport
+
+    class Meta:
+        verbose_name = 'Аэропорт'
+        verbose_name_plural = 'Аэропорты'
+
+
+class CitiesRU(models.Model):
+    city = models.CharField(max_length=100, verbose_name="Город")
+
+    def __str__(self):
+        return self.city
+
+    class Meta:
+        verbose_name = 'Город'
+        verbose_name_plural = 'Города'
