@@ -9,7 +9,13 @@ class IATA_ICAOAdmin(admin.ModelAdmin):
     search_help_text = 'Код страны'
 
 
+class ConfigAdmin(admin.ModelAdmin):
+    def has_add_permission(self, request, obj=None):
+        return False
+
+
 admin.site.register(IATA_ICAO, IATA_ICAOAdmin)
 admin.site.register(TelegramScheduleUser)
 admin.site.register(Airport)
 admin.site.register(CitiesRU)
+admin.site.register(Config, ConfigAdmin)

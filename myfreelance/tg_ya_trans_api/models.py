@@ -66,3 +66,15 @@ class CitiesRU(models.Model):
     class Meta:
         verbose_name = 'Город'
         verbose_name_plural = 'Города'
+
+
+class Config(models.Model):
+    yandex_api_key = models.CharField(max_length=1000, verbose_name="Yandex")
+    telegram_token = models.CharField(max_length=1000, verbose_name="Telegram")
+
+    def __str__(self):
+        return 'Настройки проекта'
+
+    class Meta:
+        verbose_name = 'Настройки'
+        verbose_name_plural = 'Настройки'
