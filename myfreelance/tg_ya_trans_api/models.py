@@ -47,7 +47,7 @@ class TelegramScheduleUser(models.Model):
 
 class LoggingTelegramUser(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
-    tg_user = models.OneToOneField(TelegramScheduleUser, on_delete=models.DO_NOTHING, verbose_name="User")
+    tg_user = models.ForeignKey(TelegramScheduleUser, on_delete=models.DO_NOTHING, verbose_name="User")
     action = models.CharField(max_length=100, null=True, blank=False, default='', verbose_name="Action")
 
     def __str__(self):

@@ -22,7 +22,7 @@ class TelegramScheduleUserAdmin(admin.ModelAdmin):
 
 
 class LoggingTelegramUserAdmin(admin.ModelAdmin):
-    list_display = ('tg_user', 'action')
+    list_display = ('date_created', 'tg_user', 'action')
     ordering = ('date_created',)
 
 
