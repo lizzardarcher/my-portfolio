@@ -18,7 +18,7 @@ else:
     from tg_ya_trans_api.utils import kb
 
 from tg_ya_trans_api.models import TelegramScheduleUser as User
-from tg_ya_trans_api.models import Config, CitiesRU
+from tg_ya_trans_api.models import Config, CitiesRU, LoggingTelegramUser
 
 YANDEX_TRANSPORT_API_KEY = Config.objects.get(pk=1).yandex_api_key
 TOKEN = Config.objects.get(pk=1).telegram_token
@@ -183,6 +183,9 @@ def get_schedule(station, direction, selected_date, selected_shift_type, bot, me
         bot.send_message(message.chat.id, text=text, parse_mode='HTML')
         count += 1
     bot.send_message(message.chat.id, text='Начать поиск заново /start')
+    action = str(station) + ' ' + str(selected_date) + ' ' + str(selected_shift_type)
+    tg_user = User.objects.get(telegram_id=message.message_id)
+    LoggingTelegramUser.objects.create(tg_user_id=tg_user.id, action=action)
     for sh in schedule_pool:
         print(sh)
 
