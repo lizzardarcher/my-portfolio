@@ -4,6 +4,7 @@ import requests
 import json
 import datetime
 import os
+
 import telebot
 from telebot import TeleBot
 from telebot.types import ReplyKeyboardRemove
@@ -32,15 +33,15 @@ telebot.logger.setLevel(logging.WARNING)
 
 def get_schedule(station, direction, selected_date, selected_shift_type, bot, message):
     station_code = station
-    lang = ''
-    json_response = 'json'
     date_1 = selected_date
     date_2 = datetime.datetime.strptime(selected_date, '%Y-%m-%d') + datetime.timedelta(days=1)
+    json_response = 'json'
     transport_type = 'plane'
-    event = direction  # departure / arrival
     system = 'iata'
-    raw_data = []
+    lang = ''
+    event = direction  # departure / arrival
     ru_cities = [city.city for city in CitiesRU.objects.all()]
+    raw_data = []
     schedule_pool = []
     event_type = -1
     if event == 'arrival': event_type = 0
@@ -168,6 +169,9 @@ def get_schedule(station, direction, selected_date, selected_shift_type, bot, me
                         print(traceback.format_exc())
                         raw_data.append((i[event], _from, i['thread']['number']))
 
+    '''
+        Соритируем множество, в котором убираны объединенные рейсы
+    '''
     raw_data = sorted(raw_data)
     count = 1
 
