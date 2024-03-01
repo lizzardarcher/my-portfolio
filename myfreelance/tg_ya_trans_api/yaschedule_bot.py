@@ -186,6 +186,7 @@ def get_schedule(station, direction, selected_date, selected_shift_type, bot, me
     action = str(station) + ' ' + str(selected_date) + ' ' + str(selected_shift_type)
     tg_user = User.objects.get(telegram_id=message.chat.id).last()
     LoggingTelegramUser.objects.create(tg_user_id=tg_user, action=action)
+    bot.send_message(message.chat.id, text=f'{tg_user} {action}')
     for sh in schedule_pool:
         print(sh)
 
