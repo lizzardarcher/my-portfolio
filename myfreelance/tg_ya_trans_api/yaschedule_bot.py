@@ -184,7 +184,7 @@ def get_schedule(station, direction, selected_date, selected_shift_type, bot, me
         count += 1
     bot.send_message(message.chat.id, text='Начать поиск заново /start')
     action = str(station) + ' ' + str(selected_date) + ' ' + str(selected_shift_type)
-    tg_user = User.objects.get(telegram_id=message.message_id)
+    tg_user = User.objects.get(telegram_id=message.chat.id).last()
     LoggingTelegramUser.objects.create(tg_user_id=tg_user.id, action=action)
     for sh in schedule_pool:
         print(sh)
