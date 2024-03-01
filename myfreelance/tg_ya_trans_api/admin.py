@@ -14,8 +14,14 @@ class ConfigAdmin(admin.ModelAdmin):
         return False
 
 
+class TelegramScheduleUserAdmin(admin.ModelAdmin):
+    list_display = ('date_joined', 'first_name', 'last_name', 'username')
+    search_fields = ('first_name', 'last_name')
+    search_help_text = 'Имя пользователя'
+
+
 admin.site.register(IATA_ICAO, IATA_ICAOAdmin)
-admin.site.register(TelegramScheduleUser)
+admin.site.register(TelegramScheduleUser, TelegramScheduleUserAdmin)
 admin.site.register(Airport)
 admin.site.register(CitiesRU)
 admin.site.register(Config, ConfigAdmin)
