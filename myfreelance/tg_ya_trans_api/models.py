@@ -45,6 +45,19 @@ class TelegramScheduleUser(models.Model):
         verbose_name_plural = 'Пользователи телеграм'
 
 
+class LoggingTelegramUser(models.Model):
+    date_created = models.DateTimeField(auto_now_add=True)
+    tg_user = models.OneToOneField(TelegramScheduleUser, on_delete=models.DO_NOTHING, verbose_name="User")
+    action = models.CharField(max_length=100, null=True, blank=False, default='', verbose_name="Action")
+
+    def __str__(self):
+        return str(self.tg_user) + ' ' + str(self.action)
+
+    class Meta:
+        verbose_name = 'Действие пользователя'
+        verbose_name_plural = 'Действия пользователя'
+
+
 class Airport(models.Model):
     iata = models.CharField(max_length=3, verbose_name="IATA")
     airport = models.CharField(max_length=1000, verbose_name="Аэропорт ")
