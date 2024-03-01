@@ -20,11 +20,28 @@ class TelegramScheduleUserAdmin(admin.ModelAdmin):
     search_help_text = 'Имя пользователя'
     ordering = ('-date_joined',)
 
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
 
 class LoggingTelegramUserAdmin(admin.ModelAdmin):
     list_display = ('date_created', 'tg_user', 'action')
     ordering = ('-date_created',)
 
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
 
 admin.site.register(IATA_ICAO, IATA_ICAOAdmin)
 admin.site.register(TelegramScheduleUser, TelegramScheduleUserAdmin)
