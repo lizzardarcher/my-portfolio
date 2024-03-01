@@ -185,12 +185,8 @@ def get_schedule(station, direction, selected_date, selected_shift_type, bot, me
 
     bot.send_message(message.chat.id, text='Начать поиск заново /start')
     action = str(station) + ' ' + str(selected_date) + ' ' + str(selected_shift_type)
-
-    bot.send_message(message.chat.id, text=f'{action}')
-    tg_user = User.objects.get(telegram_id=message.chat.id)
-
+    tg_user = User.objects.get(telegram_id=message.chat.id).telegram_id
     LoggingTelegramUser.objects.create(tg_user_id=tg_user, action=action)
-    bot.send_message(message.chat.id, text=f'{tg_user}')
 
 
 def clear_user(user):
