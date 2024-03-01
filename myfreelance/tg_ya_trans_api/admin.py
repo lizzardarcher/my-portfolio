@@ -18,6 +18,12 @@ class TelegramScheduleUserAdmin(admin.ModelAdmin):
     list_display = ('date_joined', 'first_name', 'last_name', 'username')
     search_fields = ('first_name', 'last_name')
     search_help_text = 'Имя пользователя'
+    ordering = ('date_joined',)
+
+
+class LoggingTelegramUserAdmin(admin.ModelAdmin):
+    list_display = ('tg_user', 'action')
+    ordering = ('date_created',)
 
 
 admin.site.register(IATA_ICAO, IATA_ICAOAdmin)
@@ -25,3 +31,4 @@ admin.site.register(TelegramScheduleUser, TelegramScheduleUserAdmin)
 admin.site.register(Airport)
 admin.site.register(CitiesRU)
 admin.site.register(Config, ConfigAdmin)
+admin.site.register(LoggingTelegramUser, LoggingTelegramUserAdmin)
