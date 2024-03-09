@@ -20,6 +20,7 @@ else:
 from tg_ya_trans_api.models import TelegramScheduleUser as User
 from tg_ya_trans_api.models import Config, CitiesRU, LoggingTelegramUser
 
+DEBUG = False
 YANDEX_TRANSPORT_API_KEY = Config.objects.get(pk=1).yandex_api_key
 TOKEN = Config.objects.get(pk=1).telegram_token
 bot = TeleBot(token=TOKEN)
@@ -28,7 +29,8 @@ calendar = Calendar(language=RUSSIAN_LANGUAGE)
 calendar_1_callback = CallbackData("calendar_1", "action", "year", "month", "day")
 
 logger = telebot.logger
-telebot.logger.setLevel(logging.WARNING)
+if DEBUG:
+    telebot.logger.setLevel(logging.WARNING)
 
 
 def get_schedule(station, direction, selected_date, selected_shift_type, bot, message):
@@ -139,7 +141,7 @@ def get_schedule(station, direction, selected_date, selected_shift_type, bot, me
         for i in schedule_pool:
             _from = i['thread']['title'].split(' — ')[event_type].lower()
             if _from not in ru_cities:
-                print(i[event], i['thread']['title'])
+                if DEBUG: print(i[event], i['thread']['title'])
                 fl_time = str(i[event]).split('T')[-1].split('+')[0][:5]
                 if selected_shift_type == 'day':
 
@@ -166,7 +168,7 @@ def get_schedule(station, direction, selected_date, selected_shift_type, bot, me
                         if raw_data[-1] != (i[event], _from):
                             raw_data.append((i[event], _from, i['thread']['number']))
                     except:
-                        print(traceback.format_exc())
+                        if DEBUG: print(traceback.format_exc())
                         raw_data.append((i[event], _from, i['thread']['number']))
 
     '''
@@ -187,7 +189,6 @@ def get_schedule(station, direction, selected_date, selected_shift_type, bot, me
     action = f'{str(station)} {str(selected_date)} {str(selected_shift_type)} {str(direction)}'
     tg_user = User.objects.get(telegram_id=message.chat.id).telegram_id
     LoggingTelegramUser.objects.create(tg_user_id=tg_user, action=action)
-
 
 
 def clear_user(user):
@@ -287,7 +288,7 @@ def schedule_callback_query_handler(call):
             text=f"Выбрана дата: {selected_date.strftime('%d.%m.%Y')}",
             reply_markup=ReplyKeyboardRemove(),
         )
-        print(f"{calendar_1_callback}: Day: {selected_date.strftime('%d.%m.%Y')}")
+        if DEBUG: print(f"{calendar_1_callback}: Day: {selected_date.strftime('%d.%m.%Y')}")
         selected_date = selected_date.strftime('%Y-%m-%d')
         user.update(selected_date=selected_date)
         bot.send_message(chat_id=call.message.chat.id, text='Выберите тип выборки в соответствии с вашей сменой',
@@ -299,7 +300,7 @@ def schedule_callback_query_handler(call):
             text="Cancellation",
             reply_markup=ReplyKeyboardRemove(),
         )
-        print(f"{calendar_1_callback}: Cancellation")
+        if DEBUG: print(f"{calendar_1_callback}: Cancellation")
 
 
 bot.infinity_polling()
