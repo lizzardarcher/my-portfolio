@@ -229,11 +229,13 @@ def send_to_all(message):
         for id in ids:
             try:
                 bot.send_message(id, text=message.text)
-                print(str(counter), 'MGS sent to', str(id))
+                bot.send_message(message.chat.id, text=f'{str(counter)} {str(id)}')
             except:
-                print(traceback.format_exc())
+                if DEBUG:
+                    print(traceback.format_exc())
+
     msg = bot.send_message(message.chat.id,
-                            text='Enter message for all')
+                           text='Enter message for all')
     bot.register_next_step_handler(msg, send_everybody)
 
 
