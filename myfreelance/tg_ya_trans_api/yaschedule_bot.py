@@ -176,14 +176,19 @@ def get_schedule(station, direction, selected_date, selected_shift_type, bot, me
     '''
     raw_data = sorted(raw_data)
     count = 1
+    buffer = ''
 
     for data in raw_data:
         tm = '<code>' + str(data[0]).split('T')[-1].split('+')[0][:5] + '</code>'
         fl = str(data[2])
         ds = '<i>' + str(data[1]).capitalize() + '</i>'
-        text = str(count) + ') ' + tm + ' | ' + fl + ' | ' + ds
-        bot.send_message(message.chat.id, text=text, parse_mode='HTML')
-        count += 1
+        if buffer == f'{tm}{ds}':
+            pass
+        else:
+            buffer = f'{tm}{ds}'
+            text = str(count) + ') ' + tm + ' | ' + fl + ' | ' + ds
+            bot.send_message(message.chat.id, text=text, parse_mode='HTML')
+            count += 1
 
     bot.send_message(message.chat.id, text='Начать поиск заново /start')
     action = f'{str(station)} {str(selected_date)} {str(selected_shift_type)} {str(direction)}'
@@ -214,6 +219,22 @@ def start(message):
 
     bot.send_message(message.chat.id, text='Добро пожаловать, бла-бла-бла выберите ваш международный аэропорт',
                      reply_markup=kb.start_markup())
+
+
+@bot.message_handler(commands=['send_to_all'])
+def send_to_all(message):
+    def send_everybody(message):
+        ids = [x.telegram_id for x in User.objects.all()]
+        counter = 1
+        for id in ids:
+            try:
+                bot.send_message(id, text=message.text)
+                print(str(counter), 'MGS sent to', str(id))
+            except:
+                print(traceback.format_exc())
+    msg = bot.send_message(message.chat.id,
+                            text='Enter message for all')
+    bot.register_next_step_handler(msg, send_everybody)
 
 
 @bot.callback_query_handler(func=lambda call: True)
